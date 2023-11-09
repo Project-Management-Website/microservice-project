@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { CreateDataInput, GetDetailInput, GetListInput } from "./task.validate";
-import { createTask, getTask, getTasks } from "./task.service";
+import { CreateDataInput, GetDetailInput, GetListInput } from "./project.validate";
+import { createProject, getProject, getProjects } from "./project.service";
 import createHttpError from "http-errors";
 import { FilterQuery } from "mongoose";
-import { ITask } from "./task.model";
+import { IProject } from "./project.model";
 import { v4 } from "uuid";
 
 const detail = async (
@@ -12,7 +12,7 @@ const detail = async (
     next: NextFunction
 ) => {
     try {
-        const user = await getTask(
+        const user = await getProject(
             {
                 uuid: req.params.id
             },
@@ -21,7 +21,7 @@ const detail = async (
             }
         )
         if (!user) {
-            throw new createHttpError.NotFound('Task not found');
+            throw new createHttpError.NotFound('project not found');
         }
         res.status(200).json({
             user,
@@ -38,9 +38,9 @@ const list = async (
 ) => {
 
     const { limit, page, search } = req.query;
-    const conditions: FilterQuery<ITask> = req.query
+    const conditions: FilterQuery<IProject> = req.query
     
-    const items = await getTasks(
+    const items = await getProjects(
         conditions,
         {
 
@@ -63,17 +63,17 @@ const create = async (
     next: NextFunction,
 ) => {
     try {
-        const newTaskData: ITask = {
+        const newprojectData: IProject = {
             uuid: v4(),
             ...req.body,
             created_at: new Date()
         }
 
-        const newTask = await createTask(newTaskData);
+        const newproject = await createProject (newprojectData);
 
         res.status(201).json({
             message: "success",
-            data: newTask,
+            data: newproject,
         })
     } catch (err) {
         next(err)
