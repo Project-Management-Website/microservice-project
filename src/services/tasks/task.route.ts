@@ -1,12 +1,13 @@
 import express from "express"
 import taskHandler from "./task.http"
+import verifyToken from "../../middlewares/verifyToken";
 
 const router = express.Router();
 
-router.get('/:id', [], taskHandler.detail);
+router.get('/:id', [verifyToken], taskHandler.detail);
 
-router.get('/', [], taskHandler.list);
+router.get('/', [verifyToken], taskHandler.list);
 
-router.post('/', [], taskHandler.create)
+router.post('/', [verifyToken], taskHandler.create)
 
 export = router

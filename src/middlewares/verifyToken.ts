@@ -7,17 +7,18 @@ const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
     const accessToken = req.headers['jwt-token'];
     if (!accessToken) {
       console.log("asd")
-      throw createHttpError(401, 'Unauthorized');
+      throw createHttpError(401, 'Unauthorized')
     }
 
     const user = await authGrpc(accessToken as string);
     if (user) {
+      console.log(user)
       res.locals.user = user;
     }
 
     return next();
   } catch (err) {
-    next();
+    next(err);
   }
 };
 

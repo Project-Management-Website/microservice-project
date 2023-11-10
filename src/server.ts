@@ -23,7 +23,6 @@ export function createServer() :Expression {
       }
     );
       
-
     return app;
 }
 
@@ -49,6 +48,6 @@ function middlewares(app: express.Express): void {
       next();
     });
 
-  app.use(verifyToken)
+  // app.use(verifyToken)
 
 }
