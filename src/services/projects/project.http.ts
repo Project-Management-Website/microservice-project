@@ -12,19 +12,19 @@ const detail = async (
     next: NextFunction
 ) => {
     try {
-        const user = await getProject(
+        const project = await getProject(
             {
-                uuid: req.params.id
+                uuid: req.params.uuid
             },
             {
 
             }
         )
-        if (!user) {
+        if (!project) {
             throw new createHttpError.NotFound('project not found');
         }
         res.status(200).json({
-            user,
+            project,
         })
     } catch (err) {
         next(err);

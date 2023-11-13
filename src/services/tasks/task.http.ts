@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { CreateDataInput, GetDetailInput, GetListInput } from "./task.validate";
-import { createTask, getTask, getTasks } from "./task.service";
+import { CreateDataInput, GetDetailInput, GetListInput, updateTaskInput } from "./task.validate";
+import { createTask, getTask, getTasks, updateTask } from "./task.service";
 import createHttpError from "http-errors";
 import { FilterQuery } from "mongoose";
 import { ITask } from "./task.model";
@@ -12,19 +12,19 @@ const detail = async (
     next: NextFunction
 ) => {
     try {
-        const user = await getTask(
+        const task = await getTask(
             {
-                uuid: req.params.id
+                uuid: req.params.uuid
             },
             {
 
             }
         )
-        if (!user) {
+        if (!task) {
             throw new createHttpError.NotFound('Task not found');
         }
         res.status(200).json({
-            user,
+            task,
         })
     } catch (err) {
         next(err);
@@ -80,8 +80,37 @@ const create = async (
     }
 }
 
+const update = async (
+    req: Request<updateTaskInput['params'], never, updateTaskInput['body']>,
+    res: Response,
+    next: NextFunction
+) => {
+    try { 
+        console.log(req.body)
+        const updatedTask = await updateTask(
+            {
+                uuid: req.params.uuid,
+            },
+            {
+                $set: {
+                    ...req.body,
+                    update_at: new Date()
+                }
+            },
+        )
+
+        res.status(201).json({
+            message: 'success',
+            data: updatedTask,
+        })
+    } catch (err) {
+    next(err);
+    }
+}
+
 export default {
     list,
     detail,
-    create
+    create,
+    update
 }

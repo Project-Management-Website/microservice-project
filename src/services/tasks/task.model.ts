@@ -11,7 +11,7 @@ export interface ITask {
     update_at?: Date;
     due_date?: Date;
     priority?: string;
-    project_uuid: string;
+    project_uuid?: string;
 }
 
 const TaskSchema: Schema<ITask> = new Schema(

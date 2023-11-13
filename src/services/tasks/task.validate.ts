@@ -3,23 +3,23 @@ import { TypeOf, date, object, string } from "zod";
 const payload = {
     body: object({
         title: string({
-            required_error: "Title is required"
+            required_error: "Name is required"
         }),
         description: string().optional(),
         assignee_uuid: string().optional(),
         status: string().optional(),
         priority: string().optional(),
         due_date: date().optional(),
-        project_uuid: string({
-          required_error: "Project is required"
-        })
+        // project_uuid: string({
+        //   required_error: "Project is required"
+        // })
     })
 }
 
 const params = {
     params: object({
-      id: string({
-        required_error: 'id is required',
+      uuid: string({
+        required_error: 'uuid is required',
       }),
     }),
 };
@@ -37,9 +37,7 @@ const query = {
         .default('10')
         .transform((val) => parseInt(val)),
       search: string().optional(),
-      project_uuid: string({
-        required_error: 'Project is required'
-      })
+      project_uuid: string().optional()
     }),
   };
 
@@ -55,6 +53,12 @@ export const createTaskSchema = object({
     ...payload,
 })
 
+export const updateTaskSchema = object({
+  ...params,
+  ...payload,
+})
+
 export type CreateDataInput = TypeOf<typeof createTaskSchema>;
 export type GetDetailInput = TypeOf<typeof getDetailSchema>;
 export type GetListInput = TypeOf<typeof getListSchema>;
+export type updateTaskInput = TypeOf<typeof updateTaskSchema>
