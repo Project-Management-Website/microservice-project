@@ -1,4 +1,4 @@
-import { TypeOf, date, object, string } from "zod";
+import { z, TypeOf, date, object, string } from "zod";
 
 const payload = {
     body: object({
@@ -9,7 +9,7 @@ const payload = {
         assignee_uuid: string().optional(),
         status: string().optional(),
         priority: string().optional(),
-        due_date: date().optional(),
+        due_date: z.coerce.date().optional(),
         // project_uuid: string({
         //   required_error: "Project is required"
         // })

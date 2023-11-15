@@ -1,5 +1,6 @@
 import { Expression } from "mongoose";
 import express, { NextFunction, Request, Response } from "express"
+import compression from 'compression';
 import { createRoute } from "./routes";
 import { HttpError } from 'http-errors';
 import verifyToken from "./middlewares/verifyToken";
@@ -27,6 +28,7 @@ export function createServer() :Expression {
 }
 
 function middlewares(app: express.Express): void {
+  app.use(compression());
   app.use(express.json())
 
   app.use((req, res, next) => {
