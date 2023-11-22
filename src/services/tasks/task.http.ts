@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { CreateDataInput, GetDetailInput, GetListInput, updateTaskInput } from "./task.validate";
-import { createTask, getTask, getTasks, updateTask } from "./task.service";
+import { CreateDataInput, GetDetailInput, GetListInput, deleteTaskInput, updateTaskInput } from "./task.validate";
+import { createTask, getTask, getTasks, removeTask, updateTask } from "./task.service";
 import createHttpError from "http-errors";
 import { FilterQuery } from "mongoose";
 import { ITask } from "./task.model";
@@ -17,7 +17,7 @@ const detail = async (
                 uuid: req.params.uuid
             },
             {
-
+                
             }
         )
         if (!task) {
@@ -99,7 +99,7 @@ const update = async (
             },
         )
 
-        res.status(201).json({
+        res.status(204).json({
             message: 'success',
             data: updatedTask,
         })
@@ -108,9 +108,28 @@ const update = async (
     }
 }
 
+const remove = async (
+    req: Request<deleteTaskInput['params']>,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const conditions = req.params
+    
+        await removeTask(conditions)
+    
+        res.status(204).json({
+            message: 'success',
+        })
+    } catch (err) {
+        next(err)
+    }
+}
+
 export default {
     list,
     detail,
     create,
-    update
+    update,
+    remove,
 }

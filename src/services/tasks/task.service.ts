@@ -70,3 +70,13 @@ export async function updateTask(
         throw checkMongoErr(err as Error)
     }
 }
+
+export async function removeTask(
+    conditions: FilterQuery<ITask>,
+) {
+    try {
+        taskModel.deleteOne(conditions);
+    } catch (err) {
+        throw checkMongoErr(err as Error)
+    }
+}

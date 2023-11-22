@@ -58,7 +58,12 @@ export const updateTaskSchema = object({
   ...payload,
 })
 
+export const deleteTaskSchema = object({
+  ...params,
+})
+
 export type CreateDataInput = TypeOf<typeof createTaskSchema>;
 export type GetDetailInput = TypeOf<typeof getDetailSchema>;
 export type GetListInput = TypeOf<typeof getListSchema>;
 export type updateTaskInput = TypeOf<typeof updateTaskSchema>
+export type deleteTaskInput = TypeOf<typeof deleteTaskSchema>
