@@ -28,7 +28,7 @@ export async function getTasks(
     const query : FilterQuery<ITask> = {
         ...conditions,
     }
-    console.log(conditions)
+
     try {
         const task = await taskModel.find(query, select, options);
         return task;

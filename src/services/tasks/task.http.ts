@@ -37,24 +37,40 @@ const list = async (
     next: NextFunction
 ) => {
 
-    const { limit, page, search } = req.query;
-    const conditions: FilterQuery<ITask> = req.query
-    
-    const items = await getTasks(
-        conditions,
-        {
+    try {
+        const { search, ...filter } = req.query;
 
-        },
-        { lean: true, }
-      );
+        let conditions: FilterQuery<ITask> = filter
     
-    res.status(200).json({
-      message: 'success',
-      data: {
-        limit,
-        page,
-        items,
-      },})
+        if (search) {
+            const pattern = new RegExp(search, 'i');
+            conditions.$or = [{ title: pattern }, { assignee_uuid: pattern }, { reporter_uuid: pattern }]
+        }
+    
+        console.log(conditions)
+        
+        const items = await getTasks(
+            conditions,
+            {
+            
+            },
+            { lean: true, }
+        );
+
+        items?.forEach((item) => {
+            
+        })
+        
+        res.status(200).json({
+          message: 'success',
+          data: {
+            // limit,
+            // page,
+            items,
+          },})
+    } catch (err) {
+        next(err)
+    }
 }
 
 const create = async (

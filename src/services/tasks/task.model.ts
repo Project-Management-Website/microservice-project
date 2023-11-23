@@ -4,7 +4,7 @@ export interface ITask {
     uuid: string;
     title: string;
     description?: string;
-    creator_uuid?: string;
+    reporter_uuid?: string;
     assignee_uuid?: string;
     status?: string;
     created_at: Date;
@@ -19,7 +19,7 @@ const TaskSchema: Schema<ITask> = new Schema(
         uuid: { type: String, unique: true },
         title: { type: String },
         description: { type: String },
-        creator_uuid: { type: String },
+        reporter_uuid: { type: String },
         assignee_uuid: { type: String },
         status: { type: String },
         created_at: { type: Date, default: Date.now },

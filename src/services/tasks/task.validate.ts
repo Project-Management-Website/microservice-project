@@ -26,18 +26,19 @@ const params = {
 
 const query = {
     query: object({
-      page: string({
-        required_error: 'page must be a number',
-      })
-        .default('1')
-        .transform((val) => parseInt(val)),
-      limit: string({
-        required_error: 'page must be a number',
-      })
-        .default('10')
-        .transform((val) => parseInt(val)),
+      // page: string({
+      //   required_error: 'page must be a number',
+      // })
+      //   .default('1')
+      //   .transform((val) => parseInt(val)),
+      // limit: string({
+      //   required_error: 'page must be a number',
+      // })
+      //   .default('10')
+      //   .transform((val) => parseInt(val)),
       search: string().optional(),
-      project_uuid: string().optional()
+      status: string().optional(),
+      priority: string().optional()
     }),
   };
 

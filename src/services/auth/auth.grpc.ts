@@ -4,6 +4,8 @@ import { UserClient } from '../../proto/external/user/user_service_grpc_pb';
 import {
   AuthRequest,
   AuthResponse,
+  GetUserRequest,
+  GetUserResponse,
 } from '../../proto/external/user/user_service_pb';
 
 const userClient = new UserClient(
@@ -20,5 +22,18 @@ export function authGrpc(token: string) {
       if (err) reject(err);
       else resolve(user);
     });
+  });
+}
+
+export function getUserGrpc(uuid: string) {
+  return new Promise<GetUserResponse>((resolve, reject) => {
+    const request = new GetUserRequest();
+    request.setUuid(uuid);
+
+    userClient.getUser(request, (err, user) => {
+      if (err) reject(err);
+      else resolve(user)
+    })
+    
   });
 }
