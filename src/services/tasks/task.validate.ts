@@ -26,16 +26,16 @@ const params = {
 
 const query = {
     query: object({
-      // page: string({
-      //   required_error: 'page must be a number',
-      // })
-      //   .default('1')
-      //   .transform((val) => parseInt(val)),
-      // limit: string({
-      //   required_error: 'page must be a number',
-      // })
-      //   .default('10')
-      //   .transform((val) => parseInt(val)),
+      page: string({
+        required_error: 'page is required',
+      })
+        .default('1')
+        .transform((val) => parseInt(val)),
+      limit: string({
+        required_error: 'limit is required',
+      })
+        .default('10')
+        .transform((val) => parseInt(val)),
       search: string().optional(),
       status: string().optional(),
       priority: string().optional()

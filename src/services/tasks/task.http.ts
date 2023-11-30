@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { CreateDataInput, GetDetailInput, GetListInput, deleteTaskInput, updateTaskInput } from "./task.validate";
-import { createTask, getTask, getTasks, removeTask, updateTask } from "./task.service";
+import { countTask, createTask, getTask, getTasks, removeTask, updateTask } from "./task.service";
 import createHttpError from "http-errors";
 import { FilterQuery } from "mongoose";
 import { ITask } from "./task.model";
@@ -38,7 +38,8 @@ const list = async (
 ) => {
 
     try {
-        const { search, ...filter } = req.query;
+        const { page, limit, search, ...filter } = req.query;
+        const skip = (page-1)*limit;
 
         let conditions: FilterQuery<ITask> = filter
     
@@ -46,26 +47,23 @@ const list = async (
             const pattern = new RegExp(search, 'i');
             conditions.$or = [{ title: pattern }, { assignee_uuid: pattern }, { reporter_uuid: pattern }]
         }
-    
-        console.log(conditions)
+
+        const numTask = await countTask(conditions)
         
         const items = await getTasks(
             conditions,
             {
             
             },
-            { lean: true, }
+            { skip, limit, lean: true }
         );
-
-        items?.forEach((item) => {
-            
-        })
         
         res.status(200).json({
           message: 'success',
           data: {
-            // limit,
-            // page,
+            limit,
+            page,
+            numTask,
             items,
           },})
     } catch (err) {
@@ -131,7 +129,7 @@ const remove = async (
 ) => {
     try {
         const conditions = req.params
-    
+
         await removeTask(conditions)
     
         res.status(204).json({

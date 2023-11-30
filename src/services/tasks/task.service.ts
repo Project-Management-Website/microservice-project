@@ -75,8 +75,24 @@ export async function removeTask(
     conditions: FilterQuery<ITask>,
 ) {
     try {
-        taskModel.deleteOne(conditions);
+        await taskModel.deleteOne(conditions);
     } catch (err) {
         throw checkMongoErr(err as Error)
+    }
+}
+
+
+export async function countTask(
+    conditions: FilterQuery<ITask>
+  ): Promise<number> {
+    const query: FilterQuery<ITask> = {
+      ...conditions,
+    };
+  
+    try {
+      const result = await taskModel.countDocuments(query);
+      return result || 0;
+    } catch (err) {
+      throw checkMongoErr(err as Error);
     }
 }
