@@ -1,4 +1,13 @@
-import { z, TypeOf, date, object, string } from "zod";
+import { z, TypeOf, object, string } from "zod";
+
+const UserSchema = object({
+  uuid: string({
+    required_error: "uuid is required"
+  }),
+  username: string({
+    required_error: "username is required"
+  })
+})
 
 const payload = {
     body: object({
@@ -6,10 +15,15 @@ const payload = {
             required_error: "Name is required"
         }),
         description: string().optional(),
-        assignee_uuid: string().optional(),
-        status: string().optional(),
-        priority: string().optional(),
-        due_date: z.coerce.date().optional(),
+        assignee: UserSchema,
+        reporter: UserSchema,
+        status: string({
+            required_error: "Status is required"
+        }),
+        priority: string({
+            required_error: "Priority is required"
+        }),
+        due_date: z.coerce.date(),
         // project_uuid: string({
         //   required_error: "Project is required"
         // })

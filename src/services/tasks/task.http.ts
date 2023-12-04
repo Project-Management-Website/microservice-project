@@ -55,7 +55,7 @@ const list = async (
             {
             
             },
-            { skip, limit, lean: true }
+            { skip, limit, lean: true, sort: { _id: -1 } }
         );
         
         res.status(200).json({
