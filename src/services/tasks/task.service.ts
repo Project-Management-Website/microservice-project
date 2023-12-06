@@ -81,7 +81,6 @@ export async function removeTask(
     }
 }
 
-
 export async function countTask(
     conditions: FilterQuery<ITask>
   ): Promise<number> {

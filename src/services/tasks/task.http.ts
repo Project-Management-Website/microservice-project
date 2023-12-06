@@ -36,16 +36,23 @@ const list = async (
     res: Response,
     next: NextFunction
 ) => {
-
+    
     try {
+        const { user } = res.locals
         const { page, limit, search, ...filter } = req.query;
         const skip = (page-1)*limit;
 
         let conditions: FilterQuery<ITask> = filter
-    
+        console.log(conditions)
+        if (user.getRole() === "member") {
+            const pattern = new RegExp(user.getUuid(), 'i')
+            conditions.$or = [{ 'assignee.uuid': pattern }, { 'reporter.uuid': pattern }]
+            console.log(conditions)
+        }
         if (search) {
             const pattern = new RegExp(search, 'i');
-            conditions.$or = [{ title: pattern }, { assignee_uuid: pattern }, { reporter_uuid: pattern }]
+            conditions.$and = [{ title: pattern }]
+            console.log(conditions)
         }
 
         const numTask = await countTask(conditions)
@@ -100,7 +107,6 @@ const update = async (
     next: NextFunction
 ) => {
     try { 
-        console.log(req.body)
         const updatedTask = await updateTask(
             {
                 uuid: req.params.uuid,

@@ -6,13 +6,11 @@ const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const accessToken = req.headers['jwt-token'];
     if (!accessToken) {
-      console.log("asd")
       throw createHttpError(401, 'Unauthorized')
     }
 
     const user = await authGrpc(accessToken as string);
     if (user) {
-      console.log(user)
       res.locals.user = user;
     }
 

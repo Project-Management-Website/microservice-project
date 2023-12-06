@@ -1,6 +1,5 @@
 import express from "express"
 import taskHandler from "./task.http"
-import verifyToken from "../../middlewares/verifyToken";
 import validate from "../../middlewares/validate";
 import { createTaskSchema, deleteTaskSchema, getDetailSchema, getListSchema, updateTaskSchema } from "./task.validate";
 
