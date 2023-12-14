@@ -2,8 +2,10 @@ import config from "./config/config";
 import mongo from "./lib/mongoose.lib";
 import { createServer } from "./server";
 import * as dotenv from "dotenv"
-import { Server } from "socket.io";
+import { Server, Socket } from "socket.io";
+import verifyToken from "./middlewares/socketVerifyToken";
 import taskSocketHandler from "./services/tasks/task.socket"
+import notifSocketHandler from "./services/notifications/notification.socket"
 
 async function init(): Promise<void> {
   try {
@@ -24,8 +26,11 @@ async function init(): Promise<void> {
     })
 
     io.on("connection", (socket) => {
+      verifyToken(io)
+
       console.log("client connected")
       taskSocketHandler(io, socket)
+      notifSocketHandler(io, socket)
     })
 
   } catch (err) {

@@ -1,10 +1,16 @@
 import mongoose, { Schema } from "mongoose";
+import { IUser } from "../tasks/task.model";
+
+interface ITask {
+    uuid: string,
+    title: string
+}
 
 export interface INotification {
     uuid: string;
     message: string;
-    users_uuid?: string[];
-    task_uuid?: string;
+    related_users?: IUser[];
+    task?: ITask;
     isRead?: boolean;
     created_at: Date;
 }
@@ -13,10 +19,18 @@ const NotificationSchema: Schema<INotification> = new Schema(
     {
         uuid: { type: String, unique: true },
         message: { type: String },
-        users_uuid: { type: String },
-        task_uuid: { type: [String] },
+        related_users: { type: [{
+            uuid: { type: String },
+            username: { type: String },
+            _id: false,
+        }]},
+        task: { type: {
+            uuid: { type: String },
+            title: { type: String },
+            _id: false,
+        }},
         isRead: { type: Boolean },
-        created_at: { type: Date },
+        created_at: { type: Date, default: Date.now() },
     }
 )
 

@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-interface IUser {
+export interface IUser {
     uuid: string;
     username: string;
 }

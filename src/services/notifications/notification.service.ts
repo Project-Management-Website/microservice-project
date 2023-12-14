@@ -1,9 +1,8 @@
 import { FilterQuery, ProjectionType, QueryOptions, UpdateQuery } from "mongoose";
 import notificationModel, { INotification } from "./notification.model";
 import { checkMongoErr } from "../../helpers/catchError.helper";
-import createHttpError from "http-errors";
 
-export async function getNoti(
+export async function getNotification(
     conditions: FilterQuery<INotification>,
     select: ProjectionType<INotification> = {},
     options: QueryOptions = { lean: true }
@@ -20,7 +19,7 @@ export async function getNoti(
     }
 }
 
-export async function getNotis(
+export async function getNotifications(
     conditions: FilterQuery<INotification>,
     select: ProjectionType<INotification> = {},
     options: QueryOptions = { lean: true }
@@ -37,7 +36,7 @@ export async function getNotis(
     }
 }
 
-export async function createNoti(
+export async function createNotification(
     input: INotification
 ): Promise<INotification> {
     try {
