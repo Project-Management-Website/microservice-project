@@ -54,7 +54,6 @@ export async function updateTask(
     options: QueryOptions = { new: true, lean: true }
 ):Promise<ITask> {
     try {
-        console.log(input, conditions)
         const task = await taskModel.findOneAndUpdate(
             {
                 ...conditions,

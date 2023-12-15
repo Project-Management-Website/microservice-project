@@ -25,10 +25,10 @@ async function init(): Promise<void> {
       }
     })
 
-    io.on("connection", (socket) => {
+    io.on("connection",(socket) => {
       verifyToken(io)
 
-      console.log("client connected")
+      console.log("client connected:", socket.id)
       taskSocketHandler(io, socket)
       notifSocketHandler(io, socket)
     })

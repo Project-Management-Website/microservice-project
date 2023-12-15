@@ -2,9 +2,20 @@ import { Server, Socket } from "socket.io"
 import { CreateDataInput } from "./notification.validate"
 
 const handler = (io: Server, socket: Socket) => {
-    socket.on("notif:create", (data: CreateDataInput) => {
+    const users = [];
+    console.log(socket.data)
+    for (let [id, socket] of io.of("/").sockets) {
+        users.push({
+            socketId: id,
+            userUuid: socket.data.user
+        });
+    }
+    console.log(users)
 
-        socket.emit("notif:notify", {
+    socket.on("notif:create", (data: CreateDataInput) => {
+        console.log(socket.data.user)
+        console.log(data)
+        io.emit("notif:notify", {
             message: "Do da task"
         })
     })

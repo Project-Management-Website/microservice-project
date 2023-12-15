@@ -27,7 +27,6 @@ export async function getNotifications(
     const query : FilterQuery<INotification> = {
         ...conditions,
     }
-    console.log(conditions)
     try {
         const noti = await notificationModel.find(query, select, options);
         return noti;

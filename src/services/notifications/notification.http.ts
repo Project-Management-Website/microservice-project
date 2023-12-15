@@ -41,7 +41,6 @@ const list = async (
         const { user } = res.locals
 
         let conditions: FilterQuery<INotification> = user
-        console.log(conditions)
 
         const items = await getNotifications(
             conditions,
