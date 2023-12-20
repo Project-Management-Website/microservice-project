@@ -9,7 +9,8 @@ interface ITask {
 export interface INotification {
     uuid: string;
     message: string;
-    related_users?: IUser[];
+    sender?: IUser;
+    receiver?: IUser[];
     task?: ITask;
     isRead?: boolean;
     created_at: Date;
@@ -19,7 +20,12 @@ const NotificationSchema: Schema<INotification> = new Schema(
     {
         uuid: { type: String, unique: true },
         message: { type: String },
-        related_users: { type: [{
+        sender: { type: {
+            uuid: { type: String },
+            username: { type: String },
+            _id: false,
+        }},
+        receiver: { type: [{
             uuid: { type: String },
             username: { type: String },
             _id: false,

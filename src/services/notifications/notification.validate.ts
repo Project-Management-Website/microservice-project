@@ -23,7 +23,8 @@ const payload = {
         message: string({
             required_error: "Message is required",
         }),
-        related_users: UserSchema.array(),
+        sender: UserSchema,
+        receiver: UserSchema.array(),
         task: TaskSchema,
         isRead: boolean().optional(),
     })

@@ -12,7 +12,7 @@ const detail = async (
     next: NextFunction
 ) => {
     try {
-        const task = await getNotification(
+        const notif = await getNotification(
             {
                 uuid: req.params.uuid
             },
@@ -20,11 +20,11 @@ const detail = async (
                 
             }
         )
-        if (!task) {
+        if (!notif) {
             throw new createHttpError.NotFound('Notification not found');
         }
         res.status(200).json({
-            task,
+            notif,
         })
     } catch (err) {
         next(err);
