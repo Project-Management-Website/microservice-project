@@ -5,7 +5,7 @@ import * as dotenv from "dotenv"
 import { Server, Socket } from "socket.io";
 import verifyToken from "./middlewares/socketVerifyToken";
 import taskSocketHandler from "./services/tasks/task.socket"
-import notifSocketHandler from "./services/notifications/notification.socket"
+import { handler } from "./services/notifications/notification.socket"
 
 async function init(): Promise<void> {
   try {
@@ -29,8 +29,8 @@ async function init(): Promise<void> {
       verifyToken(io)
 
       console.log("client connected:", socket.id)
-      taskSocketHandler(io, socket)
-      notifSocketHandler(io, socket)
+      // taskSocketHandler(io, socket)
+      handler(io, socket)
     })
 
   } catch (err) {

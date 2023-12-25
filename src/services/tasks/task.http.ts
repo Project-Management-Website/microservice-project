@@ -5,6 +5,7 @@ import createHttpError from "http-errors";
 import { FilterQuery } from "mongoose";
 import { ITask } from "./task.model";
 import { v4 } from "uuid";
+import { notify } from "../notifications/notification.socket";
 
 const detail = async (
     req: Request<GetDetailInput['params']>,
@@ -88,6 +89,7 @@ const create = async (
         }
 
         const newTask = await createTask(newTaskData);
+        notify(req.body.assignee.uuid)
 
         res.status(201).json({
             message: "success",
