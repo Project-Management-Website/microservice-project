@@ -39,10 +39,10 @@ const params = {
 };
 
 const query = {
-    query: object({
-      search: string().optional(),
-    }),
-  };
+  query: object({
+    search: string().optional(),
+  }),
+};
 
 export const getNotificationSchema = object({
     ...params,

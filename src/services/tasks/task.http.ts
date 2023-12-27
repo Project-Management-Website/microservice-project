@@ -6,6 +6,8 @@ import { FilterQuery } from "mongoose";
 import { ITask } from "./task.model";
 import { v4 } from "uuid";
 import { notify } from "../notifications/notification.socket";
+import { INotification } from "../notifications/notification.model";
+import { createNotification } from "../notifications/notification.service";
 
 const detail = async (
     req: Request<GetDetailInput['params']>,
@@ -82,6 +84,7 @@ const create = async (
     next: NextFunction,
 ) => {
     try {
+        const { user } = res.locals
         const newTaskData: ITask = {
             uuid: v4(),
             ...req.body,
@@ -89,7 +92,26 @@ const create = async (
         }
 
         const newTask = await createTask(newTaskData);
+        
         notify(req.body.assignee.uuid)
+        const newNoti: INotification = {
+            uuid: v4(),
+            message: "You are assigned a new task",
+            sender: {
+                uuid: user.getUuid(),
+                username: user.getUsername()
+            },
+            receiver: [{
+                uuid: req.body.assignee.uuid,
+                username: req.body.assignee.username
+            }],
+            task: {
+                uuid: newTask.uuid,
+                title: newTask.title
+            },
+            created_at: new Date()
+        }
+        createNotification(newNoti);
 
         res.status(201).json({
             message: "success",

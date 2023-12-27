@@ -2,10 +2,10 @@ import config from "./config/config";
 import mongo from "./lib/mongoose.lib";
 import { createServer } from "./server";
 import * as dotenv from "dotenv"
-import { Server, Socket } from "socket.io";
+import { Server } from "socket.io";
 import verifyToken from "./middlewares/socketVerifyToken";
-import taskSocketHandler from "./services/tasks/task.socket"
-import { handler } from "./services/notifications/notification.socket"
+
+let io: Server
 
 async function init(): Promise<void> {
   try {
@@ -19,7 +19,7 @@ async function init(): Promise<void> {
       console.log(`Listening on port ${port}`);
     });
 
-    const io = new Server(server, {
+    io = new Server(server, {
       cors: {
         origin: "*"
       }
@@ -29,8 +29,6 @@ async function init(): Promise<void> {
       verifyToken(io)
 
       console.log("client connected:", socket.id)
-      // taskSocketHandler(io, socket)
-      handler(io, socket)
     })
 
   } catch (err) {
@@ -40,3 +38,7 @@ async function init(): Promise<void> {
 }
 
 init();
+
+export {
+  io,
+}
