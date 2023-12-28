@@ -26,7 +26,8 @@ const list = async (
           message: 'success',
           data: {
             items,
-          },})
+          },
+        })
     } catch (err) {
         next(err)
     }

@@ -4,11 +4,12 @@ import { createComment } from "./comment.service";
 import { v4 } from "uuid";
 
 export const handler = async (io: Server, socket: Socket) => {
-    io.on("comment:enter", (taskId: string) => {
+    socket.on("comment:enter", (taskId: string) => {
+        console.log(taskId)
         socket.join(taskId)
     })
 
-    io.on("comment:leave", (taskId) => {
+    socket.on("comment:leave", (taskId) => {
         socket.leave(taskId)
     })
 
@@ -18,6 +19,8 @@ export const handler = async (io: Server, socket: Socket) => {
             uuid: v4(),
             created_at: new Date()
         }
+        console.log(data)
+        console.log(newComment)
         await createComment(newComment)
         io.to(`${data.task}`).emit("comment:send", data)
     })

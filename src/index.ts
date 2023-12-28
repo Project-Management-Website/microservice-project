@@ -4,6 +4,7 @@ import { createServer } from "./server";
 import * as dotenv from "dotenv"
 import { Server } from "socket.io";
 import verifyToken from "./middlewares/socketVerifyToken";
+import { handler } from "./services/comments/comment.socket";
 
 let io: Server
 
@@ -29,6 +30,7 @@ async function init(): Promise<void> {
       verifyToken(io)
 
       console.log("client connected:", socket.id)
+      handler(io, socket)
     })
 
   } catch (err) {
