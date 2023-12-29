@@ -2,7 +2,7 @@ import { TypeOf, object, string } from "zod";
 
 const query = {
     query: object({
-        search: string().optional(),
+        task: string().optional(),
     }),
 };
 
